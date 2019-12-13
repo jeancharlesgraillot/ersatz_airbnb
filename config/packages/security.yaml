@@ -1,0 +1,79 @@
+security:
+    # Les encodeurs permettent de hasher les mots de passe des utilisateurs
+    encoders:
+        App\Entity\User:
+            algorithm: bcrypt
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    # Les providers sont des fournisseurs de données utilisateurs
+    providers:
+        # Gérer des utilisateurs hors mémoire
+        in_memory: { memory: ~ } 
+        # Gérer des utilisateurs à partir de la base de données, le nom du provider est arbitraire
+        in_database:
+            # On utilise une entité que l'on a défini dans notre appli
+            entity:
+                # Nom de cette entité
+                class: App\Entity\User
+                # Quelle est la propriété de notre entité User qui permet l'authentification
+                property: email
+
+    # Les firewalls définissent les différentes parties de l'application et comment les sécuriser
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        admin:
+            pattern: ^/admin
+            anonymous: true
+
+            provider: in_database
+
+            form_login:
+                login_path: admin_account_login
+                check_path: admin_account_login
+
+            logout:
+                path: admin_account_logout
+                target: homepage
+                
+        # Globalité de l'application à mettre le plus en bas car étant sans pattern il prend le pas sur les firewalls plus spécifiques
+        main:
+            anonymous: true
+            
+            # Ou aller chercher les utilisateurs du site
+            provider: in_database
+
+            # Pour le formulaire d'authentification, on doit préciser le nom de la route qui va être appelée ...
+            form_login:
+                login_path: account_login
+                # ... Et le chemin sur lequel symfony doit vérifier les informations d'authentification
+                check_path: account_login
+                
+            # Pour la déconnexion, on précise la route et la redirection
+            logout:
+                path: account_logout
+                target: account_login
+
+            # activate different ways to authenticate
+
+            # http_basic: true
+            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+
+            # form_login: true
+            # https://symfony.com/doc/current/security/form_login_setup.html
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+
+    # Permet de sécuriser toutes les adresses qui commencent par /admin
+    access_control:
+        # Contrôle d'accès d'un utilisateur non connecté
+        - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # Contrôle d'accès d'un admin
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }
+
+
+

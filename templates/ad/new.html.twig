@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Création d'une annonce{% endblock %}
+
+{% form_theme form 'ad/_collection.html.twig' %}
+
+{% block body %}
+
+    <div class="container">
+        <h1 class="my-5">Créer une nouvelle annonce</h1>
+
+        {# Dans config->packages->twig.yaml, on peut importet un theme tout fait #}
+        {{ form_start(form) }}
+
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-light">
+                    <h2>Informations générales</h2>
+                    <hr>
+                    {{ form_row(form.title) }}
+                    {{ form_row(form.slug) }}
+                    {{ form_row(form.price) }}
+                    {{ form_row(form.rooms) }}
+                </div>
+                <div class="alert alert-light">
+                    <h2>Détails de l'annonce</h2>
+                    <hr>
+                    {{ form_row(form.introduction) }}
+                    {{ form_row(form.content) }}
+                </div>
+            </div>
+            <div class="col">
+                <div class="alert alert-light">
+                    <h2>Images de l'annonce</h2>
+                    <hr>
+                    {{ form_row(form.coverImage) }}
+                    {{ form_row(form.images) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-success clearfix">
+            <h2 class="alert-heading">Sauvegarder mon annonce</h2>
+            <p>Vous êtes sur le point de créer votre annonce !</p>
+            <button type="submit" class="btn btn-primary float-right">
+            <i class="fas fa-check"></i>
+            Créer la nouvelle annonce</button>
+        </div>
+        {# {{ form_widget(form )}} #}
+        {# <div class="form-group">
+            {{ form-label(form.title)}}
+            {{ form-widget(form.title, { 'attr': {'class': 'form-control', 'placeholder': 'Titre de l\'annonce'}})}}
+        </div> #}
+        
+        {# Permet d'insérer du code personnalisé  #}
+        {# {{ form_widget(form) }} #}
+
+        {# Permet d'afficher un champ personnalisé sans label #}
+        {# {{ form_widget(form.title) }} #}
+
+        {# Permet d'afficher un champ personnalisé avec label et gère les erreurs#}
+        {# {{ form_row(form.title) }} #}
+
+        {# Permet d'afficher le label sans champ#}
+        {# {{ form_label(form.title) }} #}
+
+
+        {{ form_end(form )}}
+
+        {# Ou la fonction form affiche un formulaire dans son entiereté et dispense d'écrire form end et start #}
+        {# {{ form(form) }} #}
+    </div>
+
+{% endblock %}
+
+{# A faire pour creer son propre thème #}
+{# {% block form_row %}
+
+    <div class="form-group">
+        {{ form_label(form) }}
+        {{ form_widget(form) }}
+    </div>
+
+{% endblock %}
+
+{% block text_widget %}
+    <input type="text" name="{{full_name}}" id="{{id}}" class="form-control">
+{% endblock %}
+
+{% block url_widget %}
+
+{% endblock %}
+
+{{% block textarea_widget %}}
+
+{% endblock %} #}
+
+
+
+{% block javascripts %}
+
+    <script src="/js/ad.js"></script>
+
+{% endblock %}
